@@ -9,6 +9,7 @@ import { ArrowDown } from "lucide-react"
 
 export function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [windowDimensions, setWindowDimensions] = useState({ width: 1920, height: 1080 })
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -16,6 +17,12 @@ export function HeroSection() {
   const springY = useSpring(mouseY, { stiffness: 100, damping: 10 })
 
   useEffect(() => {
+    // Set initial window dimensions
+    setWindowDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e
       setMousePosition({ x: clientX, y: clientY })
@@ -23,12 +30,24 @@ export function HeroSection() {
       mouseY.set(clientY)
     }
 
+    const handleResize = () => {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
     window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
+    window.addEventListener("resize", handleResize)
+    
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("resize", handleResize)
+    }
   }, [mouseX, mouseY])
 
-  const rotateX = useTransform(springY, [0, window.innerHeight], [2, -2])
-  const rotateY = useTransform(springX, [0, window.innerWidth], [-2, 2])
+  const rotateX = useTransform(springY, [0, windowDimensions.height], [2, -2])
+  const rotateY = useTransform(springX, [0, windowDimensions.width], [-2, 2])
 
   return (
     <section className="relative min-h-screen bg-black text-white overflow-hidden">
