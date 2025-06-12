@@ -57,3 +57,11 @@ export function ContactSection() {
           viewport={{ once: true }}
           className="text-center"
         >
+          <p className="text-lg text-white/60">
+            Feel free to reach out through any of the channels above.
+          </p>
+        </motion.div>
+      </motion.div>
+    </section>
+  )
+}
