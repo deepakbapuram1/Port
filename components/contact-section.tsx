@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ClipPathLinks } from "@/components/ui/clip-path-links"
 import { useRef } from "react"
